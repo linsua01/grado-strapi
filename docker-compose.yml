@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  strapi:
+    container_name: strapi
+    image: strapi/strapi
+    environment:
+      - DATABASE_CLIENT=mysql
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_NAME=grado_strapi
+      - DATABASE_USERNAME=strapi
+      - DATABASE_PASSWORD=WW@strapi2020
+    ports:
+      - 1337:1337
+    volumes:
+      - ./app:/srv/app
+    depends_on:
+      - db
+
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: grado_strapi
+      MYSQL_USER: strapi
+      MYSQL_PASSWORD: WW@strapi2020
+      MYSQL_ROOT_PASSWORD: WW@luci2020
+    ports:
+        - 3306:3306
+    volumes:
+      - ./db-data:/var/lib/mysql
